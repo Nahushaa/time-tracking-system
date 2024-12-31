@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header text-center">
+                        <h4>Register</h4>
+                    </div>
+                    <div class="card-body">
+                        <form id="registerForm" th:action="@{/register}" method="post">
+                            <div class="form-group">
+                                <label for="firstName">First Name</label>
+                                <input type="text" class="form-control" id="firstName" name="firstName" placeholder="Enter your first name" required>
+                                <small class="form-text text-danger" id="firstNameError"></small>
+                            </div>
+                            <div class="form-group">
+                                <label for="lastName">Last Name</label>
+                                <input type="text" class="form-control" id="lastName" name="lastName" placeholder="Enter your last name" required>
+                                <small class="form-text text-danger" id="lastNameError"></small>
+                            </div>
+                            <div class="form-group">
+                                <label for="email">Email</label>
+                                <input type="email" class="form-control" id="email" name="email" placeholder="Enter your email" required>
+                                <small class="form-text text-danger" id="emailError"></small>
+                            </div>
+                            <div class="form-group">
+                                <label for="password">Password</label>
+                                <input type="password" class="form-control" id="password" name="password" placeholder="Enter your password" required>
+                                <small class="form-text text-danger" id="passwordError"></small>
+                            </div>
+                            <div class="form-group">
+                                <label for="confirmPassword">Confirm Password</label>
+                                <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" placeholder="Confirm your password" required>
+                                <small class="form-text text-danger" id="confirmPasswordError"></small>
+                            </div>
+                            <button type="submit" class="btn btn-primary btn-block">Register</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="/js/script.js"></script>
+    <script>
+        document.getElementById('registerForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const firstName = document.getElementById('firstName').value;
+            const lastName = document.getElementById('lastName').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+
+            let isValid = true;
+
+            // First Name Validation
+            const firstNameError = document.getElementById('firstNameError');
+            if (!firstName.trim()) {
+                firstNameError.textContent = 'First name is required.';
+                isValid = false;
+            } else {
+                firstNameError.textContent = '';
+            }
+
+            // Last Name Validation
+            const lastNameError = document.getElementById('lastNameError');
+            if (!lastName.trim()) {
+                lastNameError.textContent = 'Last name is required.';
+                isValid = false;
+            } else {
+                lastNameError.textContent = '';
+            }
+
+            // Email Validation
+            const emailError = document.getElementById('emailError');
+            if (!email.match(/^\S+@\S+\.\S+$/)) {
+                emailError.textContent = 'Please enter a valid email address.';
+                isValid = false;
+            } else {
+                emailError.textContent = '';
+            }
+
+            // Password Validation
+            const passwordError = document.getElementById('passwordError');
+            if (password.length < 6) {
+                passwordError.textContent = 'Password must be at least 6 characters long.';
+                isValid = false;
+            } else {
+                passwordError.textContent = '';
+            }
+
+            // Confirm Password Validation
+            const confirmPasswordError = document.getElementById('confirmPasswordError');
+            if (password !== confirmPassword) {
+                confirmPasswordError.textContent = 'Passwords do not match.';
+                isValid = false;
+            } else {
+                confirmPasswordError.textContent = '';
+            }
+
+            if (isValid) {
+                alert('Registration successful!');
+                this.submit();
+            }
+        });
+    </script>
+</body>
+</html>
