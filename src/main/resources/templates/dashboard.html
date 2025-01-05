@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>User Dashboard</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+    <h1>Welcome, <span th:text="${user.name}">User</span>!</h1>
+    <h2>Your Tracked Time:</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Task</th>
+                <th>Hours</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="entry : ${timeEntries}">
+                <td th:text="${entry.task}"></td>
+                <td th:text="${entry.hours}"></td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>
