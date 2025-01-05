@@ -1,32 +1,35 @@
-package com.example.timetracking.controllers;
+package com.example.timetracking.controller;
 
-import com.example.timetracking.models.User;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
+import com.example.timetracking.exception.UserNotFoundException;
+import com.example.timetracking.model.User;
+import com.example.timetracking.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
+import java.util.List;
 
-@Controller
+@RestController
+@RequestMapping("/api/users")
 public class UserController {
 
-    @GetMapping("/register")
-    public String showRegistrationForm(Model model) {
-        model.addAttribute("user", new User());
-        return "register";
-    }
+    @Autowired
+    private UserService userService;
 
     @PostMapping("/register")
-    public String registerUser(@Valid @ModelAttribute("user") User user, BindingResult result, Model model) {
-        if (result.hasErrors()) {
-            return "register";
-        }
+    public String registerUser(@Validated @RequestBody User user) {
+        userService.registerUser(user);
+        return "User registered successfully!";
+    }
 
-        // Simulate saving to the database (add database logic here)
-        model.addAttribute("message", "Registration successful!");
-        return "login";
+    @GetMapping("/{id}")
+    public User getUser(@PathVariable Long id) {
+        return userService.getUserById(id)
+                .orElseThrow(() -> new UserNotFoundException("User not found with ID: " + id));
+    }
+
+    @GetMapping
+    public List<User> getAllUsers() {
+        return userService.getAllUsers();
     }
 }
